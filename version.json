@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
-  "downloadUrl": "https://github.com/YOUR-USERNAME/shopview-importer-updates",
-  "releaseNotes": "Current stable release"
+  "version": "1.5.1",
+  "downloadUrl": "https://drive.google.com/drive/u/0/folders/1si12I6V9pRN67_p3M3ZNLG1nmkPLbhXE",
+  "releaseNotes": "v1.5.1: Date/number normalization, leading zeros preserved, duplicate detection, spot-check audit, company-from-name fallback, stricter AI prompt"
 }
