@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The WTF Report — Setup &amp; Reports Guide</title>
+<style>
+  :root {
+    --blue: #2276da;
+    --blue-dark: #1b4fae;
+    --blue-soft: #e8f0fb;
+    --ink: #1b2235;
+    --body: #31374a;
+    --muted: #525b75;
+    --soft: #f5f7fa;
+    --line: #e3e6ed;
+    --ok: #1e9e3e;
+    --warn-bg: #fdf6e3;
+    --warn-line: #f2c037;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { size: letter; margin: 0.65in 0.7in; }
+  html { font-size: 10.4pt; }
+  body {
+    font-family: "Inter", "Liberation Sans", Arial, sans-serif;
+    color: var(--body);
+    line-height: 1.52;
+  }
+  a { color: var(--blue); text-decoration: none; }
+
+  /* ---------- header band ---------- */
+  .band {
+    background: linear-gradient(120deg, var(--blue) 0%, var(--blue-dark) 78%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 26px 30px 24px;
+    margin-bottom: 20px;
+  }
+  .band .kicker {
+    font-size: 8.2pt; font-weight: 600; letter-spacing: 2.2px;
+    text-transform: uppercase; opacity: .85; margin-bottom: 7px;
+  }
+  .band h1 { font-size: 25pt; font-weight: 700; letter-spacing: -.4px; line-height: 1.1; }
+  .band .tag { font-size: 12.5pt; font-style: italic; opacity: .92; margin-top: 5px; }
+  .band .meta { margin-top: 14px; font-size: 8.6pt; }
+  .band .pill {
+    display: inline-block; background: rgba(255,255,255,.16);
+    border: 1px solid rgba(255,255,255,.35); border-radius: 99px;
+    padding: 2.5px 11px; margin-right: 7px; font-weight: 600;
+  }
+
+  /* ---------- typography ---------- */
+  h2 {
+    font-size: 14.5pt; font-weight: 700; color: var(--ink);
+    margin: 26px 0 10px; letter-spacing: -.2px;
+    break-after: avoid;
+  }
+  h2 .stepno {
+    display: inline-block; width: 25px; height: 25px; line-height: 25px;
+    text-align: center; background: var(--blue); color: #fff;
+    border-radius: 8px; font-size: 11.5pt; margin-right: 9px;
+    vertical-align: -2px;
+  }
+  p { margin: 0 0 9px; }
+  .muted { color: var(--muted); }
+  .small { font-size: 8.8pt; }
+  strong { color: var(--ink); }
+  code {
+    font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+    font-size: 9pt; background: var(--soft); border: 1px solid var(--line);
+    border-radius: 4px; padding: .5px 5px; color: var(--ink); white-space: nowrap;
+  }
+
+  /* ---------- boxes ---------- */
+  .box {
+    border: 1px solid var(--line); border-radius: 10px;
+    padding: 13px 16px; margin: 12px 0; background: var(--soft);
+    break-inside: avoid;
+  }
+  .box.trust { background: #eefaf1; border-color: #bfe6c9; }
+  .box.warn { background: var(--warn-bg); border-color: var(--warn-line); }
+  .box .boxtitle {
+    font-weight: 700; color: var(--ink); font-size: 9.6pt;
+    margin-bottom: 4px; letter-spacing: .2px;
+  }
+  .linkbox {
+    background: var(--blue-soft); border: 1.5px solid var(--blue);
+    border-radius: 10px; padding: 13px 16px; margin: 12px 0;
+    break-inside: avoid;
+  }
+  .linkbox .lbl { font-size: 8.4pt; font-weight: 700; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--blue-dark); margin-bottom: 3px; }
+  .linkbox a { font-size: 10.6pt; font-weight: 600; word-break: break-all; }
+
+  /* ---------- steps ---------- */
+  ol.steps { list-style: none; counter-reset: step; margin: 10px 0 4px; }
+  ol.steps > li {
+    counter-increment: step; position: relative;
+    padding: 0 0 11px 38px; break-inside: avoid;
+  }
+  ol.steps > li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: 1px;
+    width: 23px; height: 23px; line-height: 23px; text-align: center;
+    background: #fff; color: var(--blue); border: 1.5px solid var(--blue);
+    border-radius: 50%; font-weight: 700; font-size: 10pt;
+  }
+  ul.plain { margin: 4px 0 9px 18px; }
+  ul.plain li { margin-bottom: 4px; }
+
+  /* ---------- at-a-glance table ---------- */
+  table.glance { width: 100%; border-collapse: collapse; margin: 10px 0 4px; }
+  table.glance td {
+    border-bottom: 1px solid var(--line); padding: 6.5px 8px 6.5px 0;
+    vertical-align: top; font-size: 9.6pt;
+  }
+  table.glance tr:last-child td { border-bottom: none; }
+  .chip {
+    display: inline-block; min-width: 46px; text-align: center;
+    background: var(--blue-soft); color: var(--blue-dark);
+    font-weight: 700; font-size: 8.6pt; border-radius: 6px;
+    padding: 2.5px 8px; letter-spacing: .4px;
+  }
+
+  /* ---------- report cards ---------- */
+  .report {
+    border: 1px solid var(--line); border-radius: 12px;
+    padding: 15px 18px 12px; margin: 0 0 13px;
+    break-inside: avoid;
+  }
+  .report h3 { font-size: 11.8pt; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .report h3 .chip { margin-right: 9px; vertical-align: 1px; }
+  .report p { font-size: 9.8pt; margin-bottom: 6px; }
+  .report ul { margin: 2px 0 6px 18px; font-size: 9.8pt; }
+  .report ul li { margin-bottom: 3.5px; }
+  .note {
+    font-size: 8.8pt; color: var(--muted); background: var(--soft);
+    border-radius: 7px; padding: 6px 10px; margin-top: 4px;
+  }
+  .note.internal { background: var(--warn-bg); color: #7a5c00; }
+
+  /* ---------- FAQ ---------- */
+  .faq { break-inside: avoid; margin-bottom: 11px; }
+  .faq .q { font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+  .faq .a { font-size: 9.8pt; }
+
+  /* ---------- footer ---------- */
+  .endfoot {
+    margin-top: 26px; padding-top: 12px; border-top: 2px solid var(--blue);
+    font-size: 8.8pt; color: var(--muted);
+    display: flex; justify-content: space-between;
+  }
+
+  .pagebreak { break-before: page; }
+  .keep { break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 : COVER / INTRO ================= -->
+<div class="band">
+  <div class="kicker">ShopView &middot; Reports Extension</div>
+  <h1>The WTF Report</h1>
+  <div class="tag">&ldquo;Where're The Financials?&rdquo;</div>
+  <div class="meta">
+    <span class="pill">Version 1.9.0</span>
+    <span class="pill">August 2026</span>
+    <span class="pill">Setup &amp; Reports Guide</span>
+  </div>
+</div>
+
+<p><strong>The WTF Report</strong> (yes, it stands for <em>&ldquo;Where're The Financials?&rdquo;</em>) is a small
+Chrome extension that adds <strong>seven ready-to-run reports</strong> to your ShopView account &mdash;
+including several that ShopView doesn't offer as an export today. It lives in your browser, works on top
+of the ShopView login you already have, and every report exports to <strong>CSV</strong> (opens straight in
+Excel) and <strong>Print &rarr; Save as PDF</strong>.</p>
+
+<div class="box trust">
+  <div class="boxtitle">&#10003;&nbsp; Safe by design</div>
+  <p class="small" style="margin:0">The extension is <strong>read-only</strong>: it never creates, edits, or deletes
+  anything in ShopView, and it never sends or emails anything. It simply reads your data to build reports,
+  using the ShopView session already active in your browser &mdash; no passwords, tokens, or API keys are
+  stored anywhere.</p>
+</div>
+
+<div class="keep">
+<h2 style="margin-top:18px">What's inside &mdash; at a glance</h2>
+<table class="glance">
+  <tr><td><span class="chip">WIP</span></td><td><strong>Work In Progress</strong> &mdash; the dollar value of open, not-yet-invoiced work, with margins and shop-floor detail.</td></tr>
+  <tr><td><span class="chip">WO&nbsp;Review</span></td><td><strong>Work Order Review</strong> &mdash; a printable per-work-order breakdown: parts with margins, labor by tech &amp; date, time-clock punches, totals.</td></tr>
+  <tr><td><span class="chip">Tech&nbsp;Labor</span></td><td><strong>Tech Labor</strong> &mdash; labor dollars billed and billed hours per technician for any period.</td></tr>
+  <tr><td><span class="chip">Sales</span></td><td><strong>Sales export</strong> &mdash; ShopView's Performance &rarr; Sales report, finally exportable.</td></tr>
+  <tr><td><span class="chip">A/P</span></td><td><strong>Accounts Payable</strong> &mdash; Aging Summary, Unpaid Invoices, and Aging Detail as CSV or print.</td></tr>
+  <tr><td><span class="chip">Velocity</span></td><td><strong>Part Velocity</strong> &mdash; how fast every inventory part moves, with on-hand and last-sale data.</td></tr>
+  <tr><td><span class="chip">Invoices</span></td><td><strong>Bulk invoice download</strong> &mdash; every invoice for a customer as individual PDFs in one ZIP.</td></tr>
+</table>
+</div>
+
+<div class="keep">
+<h2>What you'll need</h2>
+<ul class="plain">
+  <li><strong>Google Chrome</strong> (Microsoft Edge and Brave work the same way &mdash; Edge users open <code>edge://extensions</code> instead).</li>
+  <li>Your normal <strong>ShopView login</strong> at <code>app.shopview.com</code>.</li>
+  <li>About <strong>two minutes</strong>. There is no installer to run &mdash; you download a folder and point Chrome at it.</li>
+</ul>
+</div>
+
+<!-- ================= PAGE 2 : DOWNLOAD + INSTALL ================= -->
+<div class="pagebreak"></div>
+
+<h2><span class="stepno">1</span>Download the extension</h2>
+
+<div class="linkbox">
+  <div class="lbl">Download link</div>
+  <a href="https://drive.google.com/drive/folders/1shPJMmYjen_p94UGiit8oC1rlky3EJJ7">https://drive.google.com/drive/folders/1shPJMmYjen_p94UGiit8oC1rlky3EJJ7</a>
+</div>
+
+<ol class="steps">
+  <li>Open the link above. It's a Google Drive folder named <strong><code>wtf-report-extension</code></strong>.</li>
+  <li>Click the folder name <strong>wtf-report-extension</strong> at the top of the page and choose
+      <strong>Download</strong>. Google packs the folder into a single ZIP file and downloads it.</li>
+  <li><strong>Unzip it.</strong> On Windows: right-click the ZIP &rarr; <em>Extract All&hellip;</em>
+      On Mac: double-click the ZIP. You'll end up with a folder called <code>wtf-report-extension</code>.</li>
+  <li><strong>Move that folder somewhere permanent</strong> &mdash; for example <code>Documents</code>.
+      Chrome runs the extension straight from this folder, so don't delete it or leave it in
+      <code>Downloads</code> where it might get cleaned up later.</li>
+</ol>
+
+<h2><span class="stepno">2</span>Install it in Chrome (one time)</h2>
+
+<ol class="steps">
+  <li>In Chrome, type <strong><code>chrome://extensions</code></strong> in the address bar and press Enter.</li>
+  <li>Turn on <strong>Developer mode</strong> &mdash; it's a toggle in the <strong>top-right corner</strong> of the page.</li>
+  <li>Click the <strong>Load unpacked</strong> button that appears in the top-left.</li>
+  <li>Select the unzipped <code>wtf-report-extension</code> folder and confirm.</li>
+  <li>A card named <strong>&ldquo;The WTF Report&rdquo;</strong> appears in your extension list &mdash; you're done.
+      Optionally, click the puzzle-piece icon next to Chrome's address bar and <strong>pin</strong>
+      The WTF Report so its icon is always visible.</li>
+</ol>
+
+<div class="box">
+  <div class="boxtitle">Why &ldquo;Developer mode&rdquo;?</div>
+  <p class="small" style="margin:0">This extension is shared privately with ShopView customers instead of
+  through the public Chrome Web Store, so Chrome uses its &ldquo;unpacked&rdquo; install method. If Chrome
+  later shows a reminder about developer-mode extensions, that's expected &mdash; the extension keeps
+  working normally.</p>
+</div>
+
+<div class="pagebreak"></div>
+
+<h2 style="margin-top:0"><span class="stepno">3</span>Run your first report</h2>
+
+<ol class="steps">
+  <li>Log into ShopView at <strong><code>app.shopview.com</code></strong> as usual.</li>
+  <li>Look for the blue <strong>Reports</strong> tab docked on the <strong>right edge</strong> of the page
+      (about two-thirds of the way down), or click the extension's toolbar icon. The panel slides out and
+      docks on the right &mdash; you can drag its edge to resize it, and there's a dark-mode toggle in the header.</li>
+  <li>Check the <strong>account shown at the bottom of the panel</strong> &mdash; that's whose data the
+      reports will pull. If it's not the right one, switch accounts in ShopView first.</li>
+  <li>Pick a report tab, set your options, and click <strong>Run report</strong>. The finished report opens
+      in a <strong>new browser tab</strong> with sortable tables, summary tiles, <strong>CSV</strong> export,
+      and <strong>Print &rarr; Save as PDF</strong>.</li>
+</ol>
+
+<h2>Keeping it up to date</h2>
+<p>The extension checks for new versions on its own and shows a <strong>desktop notification</strong> when an update
+is ready. When that happens:</p>
+<ol class="steps">
+  <li>Download the latest <code>wtf-report-extension</code> folder from the <strong>same Drive link</strong> on page 2
+      and replace the contents of your saved folder. <span class="muted">(If your folder syncs via Google Drive for
+      desktop, the files update by themselves &mdash; skip this step.)</span></li>
+  <li>Open <code>chrome://extensions</code> and click the <strong>reload &#8635;</strong> icon on
+      &ldquo;The WTF Report&rdquo; card. That's it.</li>
+</ol>
+
+<!-- ================= PAGE 4+ : THE REPORTS ================= -->
+<div class="pagebreak"></div>
+
+<h2 style="margin-top:0">The reports, one by one</h2>
+<p class="muted small" style="margin-bottom:14px">Every report is read-only, opens in its own tab, and offers CSV export and Print &rarr; Save as PDF.
+Long-running reports show live progress and a <strong>Stop</strong> button &mdash; stopping still gives you a clearly-labeled partial report.</p>
+
+<div class="report">
+  <h3><span class="chip">WIP</span>Work In Progress &mdash; open work, in dollars</h3>
+  <p>The value of everything that's <strong>open but not yet invoiced</strong> &mdash; the same scope and financial
+  columns as ShopView's official WIP report, plus operational detail the official report doesn't show.</p>
+  <ul>
+    <li><strong>Options:</strong> choose which statuses to include (quick buttons: <em>Select all / All unbilled /
+        In shop only / Clear</em> &mdash; &ldquo;All unbilled&rdquo; matches the official report), plus an optional
+        <em>Created On</em> date range for faster runs.</li>
+    <li><strong>Financial columns per work order:</strong> Approved Total, Labor &amp; Parts Sell, Labor &amp; Parts Cost,
+        Shop Supplies, Discounts, Tax, Total, Margin, and Margin&nbsp;%.</li>
+    <li><strong>Operational columns:</strong> line counts, parts to order / in stock, vehicle on site, techs clocked in,
+        estimated hours, progress %, VIN, plate, service advisor, tech, mileage, engine hours.</li>
+    <li><strong>Summary up top:</strong> work-order count, Total WIP $, Total Margin $, Overall Margin %, vehicles on
+        site, techs clocked in, parts to order / ready to pick &mdash; plus a by-status breakdown and a top-10 chart.</li>
+  </ul>
+  <div class="note">Large sets take a few minutes &mdash; the report reads each work order individually. Progress is shown; Stop gives a labeled partial report.</div>
+</div>
+
+<div class="report">
+  <h3><span class="chip">WO&nbsp;Review</span>Work Order Review &mdash; the printable &ldquo;internal invoice&rdquo;</h3>
+  <p>One printable document per work order with everything an owner checks before invoicing: a snapshot with
+  customer &amp; asset info, summary tiles, <strong>labor by tech &amp; date</strong> (per-day hours and value, per-tech
+  subtotals), per-line cards (labor sessions &middot; parts with unit cost / sell / margin % &middot; pending part
+  requests &middot; tech story), invoice totals with tax, payments and open balance, and a <strong>time-clock audit</strong>
+  of every punch &mdash; with OPEN flags for techs still on the clock.</p>
+  <ul>
+    <li><strong>Input:</strong> up to 10 work-order numbers, comma-separated &mdash; <code>S1-2343</code> or just
+        <code>2343</code> both work (a location dropdown resolves bare numbers). Combined into one document with a
+        page break per work order. Works on invoiced and paid work orders too.</li>
+    <li><strong>Use current:</strong> one click fills in whatever you're looking at &mdash; on a work order it takes
+        that WO; on a customer profile it pulls <em>all</em> of that customer's work orders; on the Work Orders list
+        it takes whatever the active tab is showing (25 per report, with a pager when there are more).</li>
+    <li><strong>Export:</strong> Print &rarr; Save as PDF (print-optimized, US Letter), or a CSV ZIP with six flat
+        files per work order (labor by tech &amp; date, labor sessions, punches, parts, lines, summary).</li>
+  </ul>
+  <div class="note internal"><strong>Internal use:</strong> this report shows your costs and margins &mdash; it's for your team, not something to hand to your customer.</div>
+</div>
+
+<div class="report">
+  <h3><span class="chip">Tech&nbsp;Labor</span>Tech Labor &mdash; billed dollars &amp; hours per technician</h3>
+  <p>The per-technician numbers shops ask for at payroll or bonus time: <strong>labor dollars billed</strong> and
+  <strong>billed hours</strong> for a date range, with actual logged and clocked hours right next to them.</p>
+  <ul>
+    <li><strong>Period:</strong> This week / Last week / This month / Last month (weeks start Monday), or custom From/To.</li>
+    <li><strong>Scope:</strong> work orders invoiced in the period; an optional checkbox also includes unbilled work
+        orders created in the period, shown as separate <em>Invoiced $ / Unbilled $ / Total $</em> columns.</li>
+    <li><strong>Fair attribution:</strong> each line's invoiced labor value is split across the techs assigned to it
+        (weighted by logged time, then time estimates), so flat-rate and discounted lines still count and the report
+        total reconciles with what you actually invoiced. Lines with no tech assigned appear on an
+        <em>(Unattributed)</em> row instead of silently disappearing.</li>
+    <li><strong>Columns:</strong> Tech, WOs, Billed Hrs, Labor $ Billed, Avg $/Hr, Logged Hrs, Clocked Hrs &mdash;
+        plus cross-check tiles against ShopView's own Sales totals for the same period.</li>
+  </ul>
+  <div class="note">A full month of invoiced work orders takes a few minutes; progress and Stop are shown.</div>
+</div>
+
+<div class="report">
+  <h3><span class="chip">Sales</span>Sales &mdash; the Performance &rarr; Sales report, exportable</h3>
+  <p>ShopView's Performance &rarr; Sales report has no export button &mdash; this gives it one.</p>
+  <ul>
+    <li><strong>Period:</strong> one-click presets (This month / Last month / Last year / Yesterday) or a custom From/To range.</li>
+    <li><strong>One row per invoice:</strong> labor, parts, and total <em>Sell, Cost, Profit, Margin %</em>, plus hours worked and invoiced.</li>
+    <li><strong>Summary tiles:</strong> Total Invoiced, Total Profit, Total Margin %, Labor / Parts Invoiced, Hours.</li>
+  </ul>
+</div>
+
+<div class="report">
+  <h3><span class="chip">A/P</span>Accounts Payable &mdash; three reports with no export button, exported</h3>
+  <p>Downloads ShopView's own A/P reports as CSV or print. Pick a report and an <strong>as-of date</strong> (defaults to today).</p>
+  <ul>
+    <li><strong>Aging Summary</strong> &mdash; one row per vendor with aging buckets (Current / 1&ndash;30 / 31&ndash;60 / 61&ndash;90 / 91+) and totals per bucket plus Total Payable.</li>
+    <li><strong>Unpaid Invoices</strong> &mdash; one row per open vendor invoice: Vendor, Invoice #, Type, Date, Due Date, Past-Due days, Amount, Open Balance, Location.</li>
+    <li><strong>Aging Detail</strong> &mdash; every open invoice grouped by aging bucket.</li>
+  </ul>
+</div>
+
+<div class="report">
+  <h3><span class="chip">Velocity</span>Part Velocity &mdash; how fast your inventory moves</h3>
+  <p>For every inventory part: <strong>Qty Sold</strong> (net), <strong># Work Orders</strong>, <strong>Last Sale</strong>,
+  <strong>Last Received</strong>, <strong>Avg Monthly</strong>, <strong>On-Hand</strong>, <strong>Days Since Sale</strong>,
+  <strong>Vendor</strong>, and a <strong>Movement</strong> rating. Pick a date range, with optional vendor and movement filters.
+  Sortable table, top-10 chart, CSV, print.</p>
+  <div class="note">The report checks each part's history individually, so large catalogs take a few minutes &mdash; the vendor filter is the easiest way to narrow a run.</div>
+</div>
+
+<div class="report">
+  <h3><span class="chip">Invoices</span>Invoices &mdash; bulk-download a customer's invoice PDFs</h3>
+  <p>ShopView can only email a customer one combined statement &mdash; there's no way to download their invoices in bulk.
+  This grabs <strong>each invoice as its own PDF</strong> and bundles them into <strong>one ZIP</strong>. It never sends or
+  emails anything.</p>
+  <ul>
+    <li>Type the customer's account name &rarr; <strong>Find</strong> &rarr; pick the exact match from the dropdown.</li>
+    <li>Choose <strong>All invoices</strong> (paid + unpaid) or <strong>Unpaid only</strong>, plus an optional invoice date range.</li>
+    <li>Click <strong>Download ZIP</strong> &mdash; each PDF inside is named by its invoice number (e.g. <code>S-2275.pdf</code>).
+        If any single invoice fails to fetch it's skipped and counted in the log, and you still get the rest.</li>
+  </ul>
+</div>
+
+<!-- ================= FINAL PAGE : FAQ ================= -->
+<div class="pagebreak"></div>
+
+<h2 style="margin-top:0">FAQ &amp; troubleshooting</h2>
+
+<div class="faq">
+  <div class="q">Is it safe? What can it touch?</div>
+  <div class="a">It's read-only &mdash; it never creates, changes, or deletes anything in ShopView, and never sends or
+  emails anything. It runs only on <code>app.shopview.com</code>, uses the login already active in your browser, and
+  stores no passwords or keys. You can remove it any time from <code>chrome://extensions</code>.</div>
+</div>
+
+<div class="faq">
+  <div class="q">A report failed, or the log shows 401 / 403.</div>
+  <div class="a">Your ShopView session expired. Refresh <code>app.shopview.com</code>, log in again, and re-run the report.</div>
+</div>
+
+<div class="faq">
+  <div class="q">I don't see the blue Reports tab.</div>
+  <div class="a">Make sure you're on <code>app.shopview.com</code>, then refresh the page. Still missing? Open
+  <code>chrome://extensions</code>, check &ldquo;The WTF Report&rdquo; is switched on, click its reload &#8635; icon,
+  and refresh ShopView. Clicking the extension's toolbar icon also opens the panel directly.</div>
+</div>
+
+<div class="faq">
+  <div class="q">The report is taking a while.</div>
+  <div class="a">WIP, Velocity, WO Review and Tech Labor read each work order or part individually, so a few minutes for a
+  big date range or catalog is normal. The panel shows live progress, and <strong>Stop</strong> always gives you a
+  labeled partial report. Narrower dates or a vendor filter make runs much faster.</div>
+</div>
+
+<div class="faq">
+  <div class="q">A money cell shows &ldquo;&mdash;&rdquo; instead of a number.</div>
+  <div class="a">That work order's detail lookup didn't answer during the run &mdash; the report's log shows how many were
+  affected. Re-running usually fills them in.</div>
+</div>
+
+<div class="faq">
+  <div class="q">Chrome mentioned &ldquo;developer mode extensions&rdquo; when it started.</div>
+  <div class="a">Expected &mdash; that's Chrome's standard note for any extension installed outside the Chrome Web Store.
+  The extension keeps working normally.</div>
+</div>
+
+<div class="box" style="margin-top:18px">
+  <div class="boxtitle">Questions?</div>
+  <p class="small" style="margin:0">Just reply to the email this guide came with, or reach the ShopView team at
+  <a href="mailto:support@shopview.com"><strong>support@shopview.com</strong></a> &mdash; we're happy to walk you through
+  the setup or add the numbers you need to a report.</p>
+</div>
+
+<div class="endfoot">
+  <span><strong style="color:var(--blue)">The WTF Report</strong> &mdash; Where're The Financials?</span>
+  <span>Version 1.9.0 &middot; August 2026 &middot; ShopView</span>
+</div>
+
+</body>
+</html>
